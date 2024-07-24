@@ -1,6 +1,9 @@
-Plugin Name: SupplySign by redsgreens
+Plugin Name: SupplySign, forked from redsgreens at http://dev.bukkit.org/server-mods/supplysign/
 
-URL        : http://dev.bukkit.org/server-mods/supplysign/
+Backstory:   I had a world in 2015 that used redsgreens original plugin to create dangerous arrow shooting
+             mazes. I restored this world in 2021 and needed to update the api references and item lists
+             so my kiddos could run these mazes in the original glory. I've now updated this for the latest
+             version of Minecraft so the fun can continue. Thanks @redsgreens for the fun!
 
 Description: Use this plugin to distribute items and blocks to your players by creating [Supply] signs
              that load a chest interface when right-clicked.
