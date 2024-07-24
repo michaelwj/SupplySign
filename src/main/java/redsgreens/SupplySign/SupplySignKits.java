@@ -70,7 +70,7 @@ public class SupplySignKits {
 			}
 		}
 
-		System.out.println("SupplySign loaded " + KitsMap.size() + " kits from kits.yml.");
+		Plugin.logger.info("SupplySign loaded " + KitsMap.size() + " kits from kits.yml.");
 	}
 
 	// return a kit by name

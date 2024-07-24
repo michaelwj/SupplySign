@@ -37,7 +37,7 @@ public class SupplySignItems {
 			loadLegacyItems();
 		} catch (IOException e) {}
 		
-		System.out.println("SupplySign loaded " + ItemsMap.size() + " items.");
+		Plugin.logger.info("SupplySign loaded " + ItemsMap.size() + " items.");
 	}
 
 	private void loadLegacyItems() throws IOException
@@ -89,7 +89,7 @@ public class SupplySignItems {
 				}
 				catch (Exception ex)
 				{
-					Plugin.logger.warning("Error parsing items.csv on line " + i + ". " + ex.getMessage());
+					Plugin.logger.warning("Error parsing items.csv on line " + (i+1) + ". " + ex.getMessage());
 				}
 			}
 		}
@@ -178,7 +178,7 @@ public class SupplySignItems {
 				}
 				catch (Exception ex)
 				{
-					Plugin.logger.warning("Error parsing items-custom.csv on line " + i + ". " + ex.getMessage());
+					Plugin.logger.warning("Error parsing items-custom.csv on line " + (i+1) + ". " + ex.getMessage());
 				}
 			}
 		}
@@ -220,7 +220,6 @@ public class SupplySignItems {
 		BufferedReader rx = new BufferedReader(new FileReader(itemsFile));
 		try
 		{
-			String debugName = "";
 			for (int i = 0; rx.ready(); i++)
 			{
 				try
@@ -231,13 +230,12 @@ public class SupplySignItems {
 					String[] parts = line.split(",");
 					
 					String itemName = parts[0].toLowerCase();
-					debugName = itemName;
 					String itemID = parts[1].toUpperCase();
 					Short itemDamage = Short.parseShort(parts[2]);
 
 					
 					if(itemID.equals("COARSE_DIRT")) {
-						System.out.println("Parsed correctly: " + itemID);
+						Plugin.logger.info("Parsed correctly: " + itemID);
 					}
 
 					Material material = Material.matchMaterial(itemID);
@@ -248,7 +246,7 @@ public class SupplySignItems {
 				}
 				catch (Exception ex)
 				{
-					Plugin.logger.warning("Error parsing " + debugName + " items-base.csv on line " + i + ". " + ex.getMessage());
+					Plugin.logger.warning("Error parsing items-base.csv on line " + (i+1) + ". " + ex.getMessage());
 				}
 			}
 		}

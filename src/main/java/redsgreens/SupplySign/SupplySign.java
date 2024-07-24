@@ -48,7 +48,7 @@ public class SupplySign extends JavaPlugin {
 
 		// print loaded message
         PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
+        logger.info(pdfFile.getName() + " version " + pdfFile.getVersion() + " is enabled!");
     }
 
     @Override
@@ -59,8 +59,8 @@ public class SupplySign extends JavaPlugin {
     	
     	if(sender instanceof Player)
     	{
-    		System.out.println("Command cmd = " + sender);
-    		System.out.println("Args = " + args);
+    		logger.info("Command cmd = " + sender);
+    		logger.info("Args = " + args);
     		Player player = (Player) sender;
 
     		// supplysign command
@@ -76,7 +76,7 @@ public class SupplySign extends JavaPlugin {
             	        	Items.loadItems();
             	        	Kits.loadKits();
         				} catch (Exception e) {
-        					System.out.println("SupplySign error: " + e.getMessage());
+        					logger.warning("SupplySign error: " + e.getMessage());
            				}
         				
             			player.sendMessage("SupplySign data reloaded.");
@@ -108,7 +108,7 @@ public class SupplySign extends JavaPlugin {
     
     public void onDisable() {
         PluginDescriptionFile pdfFile = this.getDescription();
-        System.out.println( pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!" );
+        logger.info( pdfFile.getName() + " version " + pdfFile.getVersion() + " is disabled!" );
     }
     public boolean isDebugging(final Player player) {
         if (debugees.containsKey(player)) {

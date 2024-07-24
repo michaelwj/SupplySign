@@ -73,9 +73,9 @@ public class SupplySignConfig {
 			else AllowNonOpAccess = false;		
 		}
 
-		System.out.println("SupplySign: ShowErrorsInClient=" + ShowErrorsInClient);
-		System.out.println("SupplySign: FixSignOnSignGlitch=" + FixSignOnSignGlitch);
-		System.out.println("SupplySign: AllowNonOpAccess=" + AllowNonOpAccess);
+		Plugin.logger.info("SupplySign: ShowErrorsInClient=" + ShowErrorsInClient);
+		Plugin.logger.info("SupplySign: FixSignOnSignGlitch=" + FixSignOnSignGlitch);
+		Plugin.logger.info("SupplySign: AllowNonOpAccess=" + AllowNonOpAccess);
 
 	}
 
