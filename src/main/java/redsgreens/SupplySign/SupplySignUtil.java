@@ -2,6 +2,8 @@ package redsgreens.SupplySign;
 
 import org.bukkit.Material;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.block.sign.Side;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.BlockFace;
@@ -20,8 +22,17 @@ public class SupplySignUtil {
 		for(int i=0; i<adjBlocks.length; i++){
 			if(adjBlocks[i].getState() instanceof WallSign){
 				Sign sign = (Sign)adjBlocks[i].getState();
-				if(sign.getLine(0).equals("§1[Supply]"))
+				// Check the front side of the sign
+				SignSide frontSide = sign.getSide(Side.FRONT);
+				if (frontSide.getLine(0).equals("§1[Supply]")) {
 					return false;
+				}
+
+				// Check the back side of the sign if needed
+				SignSide backSide = sign.getSide(Side.BACK);
+				if (backSide.getLine(0).equals("§1[Supply]")) {
+					return false;
+				}
 			}
 		}
 		
@@ -38,8 +49,17 @@ public class SupplySignUtil {
 		for(int i=0; i<adjBlocks.length; i++){
 			if(adjBlocks[i].getState() instanceof WallSign){
 				Sign sign = (Sign)adjBlocks[i].getState();
-				if(sign.getLine(0).equals("§1[Supply]"))
+				// Check the front side of the sign
+				SignSide frontSide = sign.getSide(Side.FRONT);
+				if (frontSide.getLine(0).equals("§1[Supply]")) {
 					return false;
+				}
+
+				// Check the back side of the sign if needed
+				SignSide backSide = sign.getSide(Side.BACK);
+				if (backSide.getLine(0).equals("§1[Supply]")) {
+					return false;
+				}
 			}
 		}
 		
@@ -147,12 +167,30 @@ public class SupplySignUtil {
 		return str.replaceAll("\u00A7[0-9a-fA-F]", "");
 	}
 
-	public static Boolean isSupplySign(Sign sign)
-	{
-		if(sign.getLine(0).equals("§1[Supply]"))
+	public static Boolean isSupplySign(Sign sign) {
+		// Check the front side of the sign
+		SignSide frontSide = sign.getSide(Side.FRONT);
+		if (frontSide.getLine(0).equals("§1[Supply]")) {
 			return true;
-		else
-			return false;
+		}
+
+		// Check the back side of the sign if needed
+		SignSide backSide = sign.getSide(Side.BACK);
+		if (backSide.getLine(0).equals("§1[Supply]")) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public static SignSide getActiveSide(Sign sign) {
+		SignSide frontSide = sign.getSide(Side.FRONT);
+		SignSide backSide = sign.getSide(Side.BACK);
+		if (backSide.getLine(0).equals("§1[Supply]")) {
+			return backSide;
+		}
+
+		return frontSide;
 	}
 	
 	public static Boolean isSupplySign(Block b)

@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.block.*;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.event.block.*;
 import org.bukkit.inventory.Inventory;
@@ -37,7 +38,8 @@ public class SupplySignBlockListener implements Listener {
 		if(event.getBlockAgainst().getState() instanceof WallSign || event.getBlockAgainst().getState() instanceof Sign)
 		{
 			Sign sign = (Sign)event.getBlockAgainst().getState();
-			if (sign.getLine(0).equals("§1[Supply]")){
+			SignSide activeSide =  SupplySignUtil.getActiveSide(sign);
+			if (activeSide.getLine(0).equals("§1[Supply]")){
 				event.setCancelled(true);
 				return;
 			}
@@ -53,7 +55,8 @@ public class SupplySignBlockListener implements Listener {
 		if(event.getBlock().getState() instanceof WallSign || event.getBlock().getState() instanceof Sign)
 		{
 			Sign sign = (Sign)event.getBlock().getState();
-			if (sign.getLine(0).equals("§1[Supply]") && !Plugin.isAuthorized(event.getPlayer(), "destroy")){
+			SignSide activeSide =  SupplySignUtil.getActiveSide(sign);
+			if (activeSide.getLine(0).equals("§1[Supply]") && !Plugin.isAuthorized(event.getPlayer(), "destroy")){
 				event.setCancelled(true);
 				return;
 			}
@@ -97,9 +100,10 @@ public class SupplySignBlockListener implements Listener {
 				if(blockAgainst.getState() instanceof Sign || blockAgainst.getState() instanceof WallSign){
 					// the new sign is against another sign
 					Sign signAgainst = (Sign)blockAgainst.getState();
+					SignSide activeSide =  SupplySignUtil.getActiveSide(signAgainst);
 					
 					// check the config file to make sure the sign should be deleted
-					if((Plugin.Config.FixSignOnSignGlitch == SupplySignOnSign.SupplySignOnly && signAgainst.getLine(0).equals("§1[Supply]")) || Plugin.Config.FixSignOnSignGlitch == SupplySignOnSign.Global){
+					if((Plugin.Config.FixSignOnSignGlitch == SupplySignOnSign.SupplySignOnly && activeSide.getLine(0).equals("§1[Supply]")) || Plugin.Config.FixSignOnSignGlitch == SupplySignOnSign.Global){
 						signBlock.setType(Material.AIR);
 						ItemStack signStack = new ItemStack(event.getBlock().getType(), 1);
 						event.getPlayer().setItemInHand(signStack);
@@ -165,9 +169,10 @@ public class SupplySignBlockListener implements Listener {
 						    public void run() {
 
 						    	Sign sign = (Sign)signBlock.getState();
+								SignSide activeSide =  SupplySignUtil.getActiveSide(sign);
 						    	
 						    	for(int i=0; i<lines.length; i++)
-									sign.setLine(i, lines[i]);
+								activeSide.setLine(i, lines[i]);
 						    	
 						    	sign.update(true);
 						    }
@@ -224,9 +229,10 @@ public class SupplySignBlockListener implements Listener {
 						    public void run() {
 						    	
 						    	Sign sign = (Sign)signBlock.getState();
+								SignSide activeSide =  SupplySignUtil.getActiveSide(sign);
 
 						    	for(int i=0; i<lines.length; i++)
-									sign.setLine(i, lines[i]);
+								activeSide.setLine(i, lines[i]);
 
 						    	sign.update(true);
 
@@ -282,21 +288,22 @@ public class SupplySignBlockListener implements Listener {
 	private void fillDispenser(Dispenser dispenser, Sign sign){
 		try{
 			ArrayList<Object> itemList = new ArrayList<Object>();
+			SignSide activeSide =  SupplySignUtil.getActiveSide(sign);
 			
 			// test to see if it's a kit
-			if(sign.getLine(1).trim().contains("kit:")){
-				String[] split = sign.getLine(1).trim().split(":");
+			if(activeSide.getLine(1).trim().contains("kit:")){
+				String[] split = activeSide.getLine(1).trim().split(":");
 				itemList = Plugin.Kits.getKit(split[1]);
 			}
 			else
 			{
 				// it's not a kit, so load the items from the lines on the sign
-				if(!sign.getLine(1).trim().equalsIgnoreCase(""))
-					itemList.add(sign.getLine(1).trim());
-				if(!sign.getLine(2).trim().equalsIgnoreCase(""))
-					itemList.add(sign.getLine(2).trim());
-				if(!sign.getLine(3).trim().equalsIgnoreCase(""))
-					itemList.add(sign.getLine(3).trim());
+				if(!activeSide.getLine(1).trim().equalsIgnoreCase(""))
+					itemList.add(activeSide.getLine(1).trim());
+				if(!activeSide.getLine(2).trim().equalsIgnoreCase(""))
+					itemList.add(activeSide.getLine(2).trim());
+				if(!activeSide.getLine(3).trim().equalsIgnoreCase(""))
+					itemList.add(activeSide.getLine(3).trim());
 			}
 
 			// if any valid items were found, fill the inventory with first item in itemList

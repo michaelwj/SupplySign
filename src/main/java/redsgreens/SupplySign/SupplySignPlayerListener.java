@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import org.bukkit.Material;
 import org.bukkit.block.*;
 import org.bukkit.block.data.type.WallSign;
+import org.bukkit.block.sign.SignSide;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.EventHandler;
@@ -103,10 +104,13 @@ public class SupplySignPlayerListener implements Listener {
 				}
 
 				ArrayList<Object> itemList = new ArrayList<Object>();
+
+				// Check the front side of the sign
+				SignSide activeSide = SupplySignUtil.getActiveSide(sign);
 				
 				// if it's a kit, test for generic access permission or access to this specific kit
-				if(sign.getLine(1).trim().contains("kit:")){
-					String[] split = sign.getLine(1).trim().split(":");
+				if (activeSide.getLine(1).trim().contains("kit:")) {
+					String[] split = activeSide.getLine(1).trim().split(":");
 					
 					if(Plugin.isAuthorized(player, "access") || Plugin.isAuthorized(player, "access." + split[1]))
 						itemList = Plugin.Kits.getKit(split[1]);
@@ -118,9 +122,9 @@ public class SupplySignPlayerListener implements Listener {
 					if(Plugin.isAuthorized(player, "access"))
 					{
 						// it's not a kit, so load the items from the lines on the sign
-						String line1 = SupplySignUtil.stripColorCodes(sign.getLine(1).trim()); 
-						String line2 = SupplySignUtil.stripColorCodes(sign.getLine(2).trim()); 
-						String line3 = SupplySignUtil.stripColorCodes(sign.getLine(3).trim()); 
+						String line1 = SupplySignUtil.stripColorCodes(activeSide.getLine(1).trim()); 
+						String line2 = SupplySignUtil.stripColorCodes(activeSide.getLine(2).trim()); 
+						String line3 = SupplySignUtil.stripColorCodes(activeSide.getLine(3).trim()); 
 						if(!line1.equalsIgnoreCase(""))
 							itemList.add(line1);
 						if(!line2.equalsIgnoreCase(""))
