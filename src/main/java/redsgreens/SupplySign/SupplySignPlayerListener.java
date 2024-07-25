@@ -12,6 +12,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.*;
+import org.bukkit.inventory.PlayerInventory;
 
 /**
  * Handle events for all Player related events
@@ -96,7 +97,8 @@ public class SupplySignPlayerListener implements Listener {
 					}
 					else if(blockBehindSign.getType() == Material.CHEST && block.getState() instanceof WallSign) // if it's a chest simulate a click on the chest and return
 					{
-							Event e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, player.getItemInHand(), blockBehindSign, event.getBlockFace());
+							PlayerInventory inventory = player.getInventory();
+							Event e = new PlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, inventory.getItemInMainHand(), blockBehindSign, event.getBlockFace());
 							Plugin.getServer().getPluginManager().callEvent(e);
 							event.setCancelled(true);
 							return;

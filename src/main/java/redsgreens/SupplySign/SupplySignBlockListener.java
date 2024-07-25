@@ -106,7 +106,7 @@ public class SupplySignBlockListener implements Listener {
 					if((Plugin.Config.FixSignOnSignGlitch == SupplySignOnSign.SupplySignOnly && activeSide.getLine(0).equals("§1[Supply]")) || Plugin.Config.FixSignOnSignGlitch == SupplySignOnSign.Global){
 						signBlock.setType(Material.AIR);
 						ItemStack signStack = new ItemStack(event.getBlock().getType(), 1);
-						event.getPlayer().setItemInHand(signStack);
+						event.getPlayer().getInventory().setItemInMainHand(signStack);
 						return;
 					}
 				}
