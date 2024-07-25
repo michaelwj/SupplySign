@@ -1,7 +1,6 @@
 package redsgreens.SupplySign;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -36,100 +35,9 @@ public class SupplySignItems {
 		try {
 			loadBaseItems();
 			loadCustomItems();
-			loadLegacyItems();
 		} catch (IOException e) {}
 		
 		Plugin.logger.info("SupplySign loaded " + ItemsMap.size() + " items.");
-	}
-
-	private void loadLegacyItems() throws IOException
-	{
-		File legacyFile = new File(Plugin.getDataFolder(), "items.csv");
-		if (!legacyFile.exists())
-			return;
-
-		Map<String, SupplySignItemStack> legacyMap = new HashMap<String, SupplySignItemStack>();
-		
-		BufferedReader rx = new BufferedReader(new FileReader(legacyFile));
-		try
-		{
-
-			for (int i = 0; rx.ready(); i++)
-			{
-				try
-				{
-					String line = rx.readLine().trim().toLowerCase();
-					if (line.startsWith("#")) continue;
-
-					String[] parts = line.split(",");
-					
-					String itemName = parts[0].toLowerCase();
-					String itemID = parts[1].toUpperCase();
-					Short itemDamage = Short.parseShort(parts[2]);
-					int itemStackSize = Integer.parseInt(parts[3]);
-					
-					SupplySignItemStack stack = new SupplySignItemStack(Material.matchMaterial(itemID), itemDamage, itemStackSize);
-
-					if(ItemsMap.containsKey(itemName))
-					{
-						SupplySignItemStack stack2 = ItemsMap.get(itemName);
-						
-						if(stack.getMaterial() != stack2.getMaterial() || stack.getDurability() != stack2.getDurability() || stack.getAmount() != stack2.getAmount())
-						{
-							ItemsMap.remove(itemName);
-							ItemsMap.put(itemName, stack);
-							legacyMap.put(itemName, stack);
-						}
-						
-					}
-					else
-					{
-						ItemsMap.put(itemName, stack);
-						legacyMap.put(itemName, stack);
-					}
-					
-				}
-				catch (Exception ex)
-				{
-					Plugin.logger.warning("Error parsing items.csv on line " + (i+1) + ". " + ex.getMessage());
-				}
-			}
-		}
-		finally
-		{
-			rx.close();
-		}
-
-		if(legacyMap.size() != 0)
-		{
-			File customFile = new File(Plugin.getDataFolder(), "items-custom.csv");
-			BufferedWriter bw = new BufferedWriter(new FileWriter(customFile, true));
-			Iterator<String> i = legacyMap.keySet().iterator();
-			
-			
-			try {
-				while (i.hasNext()) {
-					String itemName = i.next().toLowerCase();
-					if(!itemName.equalsIgnoreCase("rfish") && !itemName.equalsIgnoreCase("cmcart") && !itemName.equalsIgnoreCase("slab") && !itemName.equalsIgnoreCase("redrose") && !itemName.equalsIgnoreCase("step") && !itemName.equalsIgnoreCase("17.1") && !itemName.equalsIgnoreCase("17.2") && !itemName.equalsIgnoreCase("manyarrow") && !itemName.equalsIgnoreCase("air"))
-					{
-						SupplySignItemStack stack = legacyMap.get(itemName);
-						bw.write(itemName + "," + stack.getMaterial().getId() + ","
-								+ stack.getDurability() + "," + stack.getAmount());
-						bw.newLine();
-					}
-				}
-				bw.flush();
-			} 
-			finally {
-				bw.close();
-			}
-			
-
-
-		}
-
-		legacyFile.renameTo(new File(Plugin.getDataFolder(), "items.csv.old"));
-
 	}
 
 	private void loadCustomItems() throws IOException
