@@ -142,20 +142,35 @@ public class SupplySignUtil {
 		
 		if(signBlock.getState() instanceof WallSign)
 		{
-
+			// normalize directional support
 			switch(((Directional) sbd).getFacing()){ // determine sign direction and get block behind it
-			case NORTH: // facing north
-				blockAgainst = signBlock.getRelative(BlockFace.SOUTH);
-				break;
-			case SOUTH: // facing south
-				blockAgainst = signBlock.getRelative(BlockFace.NORTH);
-				break;
-			case WEST: // facing west
-				blockAgainst = signBlock.getRelative(BlockFace.EAST);
-				break;
-			case EAST: // facing east
-				blockAgainst = signBlock.getRelative(BlockFace.WEST);
-				break;
+				case UP:
+				case DOWN:
+				case SELF:
+				case NORTH_EAST:				
+				case NORTH_NORTH_EAST:
+				case NORTH_WEST:
+				case NORTH_NORTH_WEST:
+				case NORTH: // facing north
+					blockAgainst = signBlock.getRelative(BlockFace.SOUTH);
+					break;
+				case SOUTH_EAST:
+				case SOUTH_SOUTH_EAST:
+				case SOUTH_WEST:
+				case SOUTH_SOUTH_WEST:
+				case SOUTH: // facing south
+					blockAgainst = signBlock.getRelative(BlockFace.NORTH);
+					break;
+				case WEST_NORTH_WEST:
+				case WEST_SOUTH_WEST:
+				case WEST: // facing west
+					blockAgainst = signBlock.getRelative(BlockFace.EAST);
+					break;
+				case EAST_NORTH_EAST:
+				case EAST_SOUTH_EAST:
+				case EAST: // facing east
+					blockAgainst = signBlock.getRelative(BlockFace.WEST);
+					break;
 			}
 		}
 		
