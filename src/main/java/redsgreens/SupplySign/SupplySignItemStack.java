@@ -2,6 +2,8 @@ package redsgreens.SupplySign;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class SupplySignItemStack {
 
@@ -18,7 +20,15 @@ public class SupplySignItemStack {
 
 	public ItemStack getItemStack()
 	{
-		return new ItemStack(material, amount, durability);
+		ItemStack itemStack = new ItemStack(material, amount);
+		ItemMeta itemMeta = itemStack.getItemMeta();
+		
+		if (itemMeta instanceof Damageable) {
+			((Damageable) itemMeta).setDamage(durability);
+			itemStack.setItemMeta(itemMeta);
+		}
+
+		return itemStack;
 	}
 	
 	public Short getDurability()

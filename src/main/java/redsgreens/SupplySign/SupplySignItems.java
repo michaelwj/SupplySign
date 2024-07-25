@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class SupplySignItems {
 
@@ -296,7 +298,16 @@ public class SupplySignItems {
 					String i = split[0];
 					Short d = Short.parseShort(split[1]);
 					m = Material.matchMaterial(i);
-					return new ItemStack(m, m.getMaxStackSize(), d);
+					
+					ItemStack itemStack = new ItemStack(m, m.getMaxStackSize());
+					ItemMeta itemMeta = itemStack.getItemMeta();
+					
+					if (itemMeta instanceof Damageable) {
+						((Damageable) itemMeta).setDamage(d);
+						itemStack.setItemMeta(itemMeta);
+					}
+
+					return itemStack;
 				}
 			}
 
